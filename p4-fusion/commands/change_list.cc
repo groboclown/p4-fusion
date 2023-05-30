@@ -71,21 +71,21 @@ void ChangeList::StartDownload(const int& printBatch)
 
 		    *cl.filesDownloaded = 0;
 
-			std::shared_ptr<std::vector<std::string>> printBatchFiles = std::make_shared<std::vector<std::string>>();
-			std::shared_ptr<std::vector<FileData*>> printBatchFileData = std::make_shared<std::vector<FileData*>>();
+		    std::shared_ptr<std::vector<std::string>> printBatchFiles = std::make_shared<std::vector<std::string>>();
+		    std::shared_ptr<std::vector<FileData*>> printBatchFileData = std::make_shared<std::vector<FileData*>>();
 		    // Only perform the group inspection if there are files.
 		    if (cl.changedFileGroups->totalFileCount > 0)
 		    {
 			    for (auto& branchedFileGroup : cl.changedFileGroups->branchedFileGroups)
-		    	{
-			    	// Note: the files at this point have already been filtered.
+			    {
+				    // Note: the files at this point have already been filtered.
 				    for (auto& fileData : branchedFileGroup.files)
 				    {
 					    if (fileData.IsDownloadNeeded())
 					    {
 						    fileData.SetPendingDownload();
 						    printBatchFiles->push_back(fileData.GetDepotFile() + "#" + fileData.GetRevision());
-					    	printBatchFileData->push_back(&fileData);
+						    printBatchFileData->push_back(&fileData);
 
 						    // Clear the batches if it fits
 						    if (printBatchFiles->size() == printBatch)
@@ -100,11 +100,11 @@ void ChangeList::StartDownload(const int& printBatch)
 					    }
 				    }
 			    }
-			}
+		    }
 
 		    // Flush any remaining files that were smaller in number than the total batch size.
-			// Additionally, signal the batch processing end.
-			cl.Flush(printBatchFiles, printBatchFileData);
+		    // Additionally, signal the batch processing end.
+		    cl.Flush(printBatchFiles, printBatchFileData);
 	    });
 }
 
@@ -113,20 +113,20 @@ void ChangeList::Flush(std::shared_ptr<std::vector<std::string>> printBatchFiles
 	// Share ownership of this batch with the thread job
 	ThreadPool::GetSingleton()->AddJob([this, printBatchFiles, printBatchFileData](P4API* p4)
 	    {
-			// Only perform the batch processing when there are files to process.
-			if (!printBatchFileData->empty())
-			{
-				const PrintResult& printData = p4->PrintFiles(*printBatchFiles);
+		    // Only perform the batch processing when there are files to process.
+		    if (!printBatchFileData->empty())
+		    {
+			    const PrintResult& printData = p4->PrintFiles(*printBatchFiles);
 
-				for (int i = 0; i < printBatchFiles->size(); i++)
-				{
-					printBatchFileData->at(i)->MoveContentsOnceFrom(printData.GetPrintData().at(i).contents);
-				}
+			    for (int i = 0; i < printBatchFiles->size(); i++)
+			    {
+				printBatchFileData->at(i)->MoveContentsOnceFrom(printData.GetPrintData().at(i).contents);
+			    }
 
-				(*filesDownloaded) += printBatchFiles->size();
-			}
+			    (*filesDownloaded) += printBatchFiles->size();
+		    }
 
-			// Ensure the notify_all is called.
+		    // Ensure the notify_all is called.
 		    commitCV->notify_all();
 	    });
 }
