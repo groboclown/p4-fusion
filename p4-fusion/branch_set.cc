@@ -84,10 +84,10 @@ std::array<std::string, 2> BranchSet::splitBranchPath(const std::string& relativ
 		    && relativeDepotPath[branch.size()] == '/'
 		    && STDHelpers::StartsWith(relativeDepotPath, branch))
 		{
-			return {branch, relativeDepotPath.substr(branch.size() + 1)};
+			return { branch, relativeDepotPath.substr(branch.size() + 1) };
 		}
 	}
-	return {"", ""};
+	return { "", "" };
 }
 
 std::string BranchSet::stripBasePath(const std::string& depotPath) const
