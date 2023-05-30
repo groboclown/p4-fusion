@@ -80,7 +80,11 @@ Branch createBranchFromPath(const std::string& depotBranchPath)
 	std::string branchPath = std::string(depotBranchPath);
 	std::string alias = std::string(depotBranchPath);
 
-	size_t pos = depotBranchPath.find(':');
+	// The formatting using a ':' to separate the branch path from the git alias MUST be
+	// the last ':' in the string.  This allows the command to work with branch paths that contain
+	// a ':' character, as long as the git alias does NOT contain a ':', and it implies that the git
+	// alias MUST be given.
+	size_t pos = depotBranchPath.rfind(':');
 	if (pos > 0 && depotBranchPath.size() > pos)
 	{
 		branchPath.erase(pos);
