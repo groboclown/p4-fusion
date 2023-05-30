@@ -120,7 +120,7 @@ void ChangeList::Flush(std::shared_ptr<std::vector<std::string>> printBatchFiles
 
 			    for (int i = 0; i < printBatchFiles->size(); i++)
 			    {
-				printBatchFileData->at(i)->MoveContentsOnceFrom(printData.GetPrintData().at(i).contents);
+				    printBatchFileData->at(i)->MoveContentsOnceFrom(printData.GetPrintData().at(i).contents);
 			    }
 
 			    (*filesDownloaded) += printBatchFiles->size();
