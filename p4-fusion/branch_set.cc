@@ -84,7 +84,7 @@ Branch createBranchFromPath(const std::string& depotBranchPath)
 	if (pos > 0 && depotBranchPath.size() > pos)
 	{
 		branchPath.erase(pos);
-		alias.erase(0, pos+1);
+		alias.erase(0, pos + 1);
 	}
 
 	STDHelpers::StripSurrounding(branchPath, '/');
