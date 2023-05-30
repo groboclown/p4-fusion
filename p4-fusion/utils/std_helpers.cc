@@ -50,7 +50,7 @@ void STDHelpers::StripSurrounding(std::string& source, const char c)
 	{
 		start++;
 	}
-	while (end-1 > start && source[end-1] == c)
+	while (end - 1 > start && source[end - 1] == c)
 	{
 		end--;
 	}

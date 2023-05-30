@@ -63,12 +63,12 @@ Branch::Branch(const std::string& branch, const std::string& alias)
 std::array<std::string, 2> Branch::SplitBranchPath(const std::string& relativeDepotPath) const
 {
 	if (
-		// The relative depot branch, to match this branch path, must start with the
-		// branch path + "/".  The "StartsWith" is put at the end of the 'and' checks,
-		// because it takes the longest.
-		relativeDepotPath.size() > depotBranchPath.size()
-		&& relativeDepotPath[depotBranchPath.size()] == '/'
-		&& STDHelpers::StartsWith(relativeDepotPath, depotBranchPath))
+	    // The relative depot branch, to match this branch path, must start with the
+	    // branch path + "/".  The "StartsWith" is put at the end of the 'and' checks,
+	    // because it takes the longest.
+	    relativeDepotPath.size() > depotBranchPath.size()
+	    && relativeDepotPath[depotBranchPath.size()] == '/'
+	    && STDHelpers::StartsWith(relativeDepotPath, depotBranchPath))
 	{
 		return { gitAlias, relativeDepotPath.substr(depotBranchPath.size() + 1) };
 	}
